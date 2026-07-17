@@ -679,13 +679,30 @@ a:hover {
 }
 
  @ k e y f r a m e s   m a r k e r P u l s e   { 
-     0 %   {   b o x - s h a d o w :   0   0   0   0   v a r ( - - p u l s e - c o l o r ) ;   } 
-     7 0 %   {   b o x - s h a d o w :   0   0   0   2 0 p x   r g b a ( 0 , 0 , 0 , 0 ) ;   } 
-     1 0 0 %   {   b o x - s h a d o w :   0   0   0   0   r g b a ( 0 , 0 , 0 , 0 ) ;   } 
- }  
- 
- . c u s t o m - p u l s e - m a r k e r   { 
-     b a c k g r o u n d :   t r a n s p a r e n t   ! i m p o r t a n t ; 
-     b o r d e r :   n o n e   ! i m p o r t a n t ; 
- }  
- 
+ @ k e y f r a m e s   m a r k e r P u l s e   { 
+     0 %   {   b o x - s h a d o w :   0   0   0   0   v a r ( - - p u l s e - c o l o r ) ;   } 
+     7 0 %   {   b o x - s h a d o w :   0   0   0   2 0 p x   r g b a ( 0 , 0 , 0 , 0 ) ;   } 
+     1 0 0 %   {   b o x - s h a d o w :   0   0   0   0   r g b a ( 0 , 0 , 0 , 0 ) ;   } 
+ }  
+ 
+  }  
+ 
+ . c u s t o m - p u l s e - m a r k e r   { 
+     b a c k g r o u n d :   t r a n s p a r e n t   ! i m p o r t a n t ; 
+     b o r d e r :   n o n e   ! i m p o r t a n t ; 
+ }  
+
+/* Mobile Responsive Fix for Sidebar */
+@media (max-width: 1024px) {
+  .layout-container {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  .sidebar {
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 16px;
+  }
+}
