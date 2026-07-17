@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirGuard AI - Admin Control Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        
+        
+        
+        .module-section {
+            display: none;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .module-section.active {
+            display: flex;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        
+        .sidebar-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 16px; border-radius: 8px;
+            font-size: 0.95rem; font-weight: 500;
+            color: var(--text-secondary) !important;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+        .sidebar-link:hover { 
+            background: var(--bg-tertiary); 
+            color: var(--text-primary) !important; 
+        }
+        .sidebar-link.active { 
+            background: rgba(0,112,243,0.12) !important; 
+            color: var(--accent-color) !important; 
+            border: 1px solid rgba(0,112,243,0.25) !important; 
+        }
+        
+        /* Premium Scrollbar for tables */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+
+    <div class="layout-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" style="padding: 24px; border-radius: var(--radius-md); height: calc(100vh - 64px);">
+            <div style="font-weight: 800; font-size: 1.2rem; letter-spacing: -0.05em; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Admin Control
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;">System Active</div>
+            
+            <nav class="sidebar-nav">
+                <a class="sidebar-link active" data-target="module-dashboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    System Overview
+                </a>
+                <a class="sidebar-link" data-target="module-users">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    User Management
+                </a>
+                <a class="sidebar-link" data-target="module-data">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    AQI Data & Locations
+                </a>
+                <a class="sidebar-link" data-target="module-predictions">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Prediction Models
+                </a>
+                <a class="sidebar-link" data-target="module-analytics">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    Analytics & Reports
+                </a>
+                <a class="sidebar-link" data-target="module-settings">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Settings & Security
+                </a>
+            </nav>
+
+            <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+                <button class="btn-secondary" onclick="logout()" style="width: 100%; justify-content: flex-start; gap: 8px; color: var(--danger); border-color: var(--border-subtle);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Exit Control Center
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area (SPA Modules) -->
+        <main style="display: flex; flex-direction: column;">
+            
+            <!-- MODULE: DASHBOARD -->
+            <section id="module-dashboard" class="module-section active">
+                <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                    <div>
+                        <h1 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">System Telemetry</h1>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Monitoring backend processes and API health.</p>
+                    </div>
+                    <div class="badge" style="background: rgba(0, 230, 118, 0.1); color: var(--success); border: 1px solid rgba(0, 230, 118, 0.3); font-family: monospace; display: flex; align-items: center; gap: 6px;">
+                        <div style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success);"></div>
+                        ALL SYSTEMS NOMINAL
+                    </div>
+                </header>
+
+                <div class="grid-4">
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">Total / Active Users</div>
+                        <div id="metric-users" class="metric-value" style="color: var(--text-primary); font-family: monospace;">- / -</div>
+                    </div>
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">AQI Predictions (24h)</div>
+                        <div id="metric-predictions" class="metric-value" style="color: var(--text-primary); font-family: monospace;">-</div>
+                    </div>
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">Cities Monitored</div>
+                        <div id="metric-cities" class="metric-value" style="color: var(--text-primary); font-family: monospace;">-</div>
+                    </div>
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">Server Latency</div>
+                        <div id="metric-latency" class="metric-value" style="color: var(--text-primary); font-family: monospace;">-</div>
+                    </div>
+                </div>
+
+                <div class="grid-2-1">
+                    <div class="glass-panel" style="padding: 24px;">
+                        <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 20px;">API Request Volume</h3>
+                        <div style="height: 300px;"><canvas id="adminActivityChart"></canvas></div>
+                    </div>
+                    
+                    <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column;">
+                        <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 20px;">Live Server Logs</h3>
+                        <div id="liveLogsTerminal" style="flex: 1; background: var(--bg-primary); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px; font-family: monospace; font-size: 0.85rem; color: #00e676; overflow-y: auto; height: 300px;">
+                            <div>[2026-06-12 14:02:11] GET /api/weather 200 OK</div>
+                            <div>[2026-06-12 14:02:15] POST /api/predict 200 OK</div>
+                            <div style="color: var(--text-secondary);">[2026-06-12 14:03:01] DB Sync completed.</div>
+                            <div style="color: #f5a623;">[2026-06-12 14:03:15] WARN: High latency on node 3</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: USER MANAGEMENT -->
+            <section id="module-users" class="module-section">
+                <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                    <div>
+                        <h1 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">User Management</h1>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">View, edit, block, and track user activity.</p>
+                    </div>
+                    <button class="btn-accent" onclick="app.showToast('Adding users via admin requires elevated privileges.', 'warning')">Add New User</button>
+                </header>
+
+                <div class="glass-panel" style="padding: 24px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <input type="text" class="modern-input" placeholder="Search by name, email, or ID..." style="background: var(--bg-primary); border-color: var(--border-subtle); width: 300px;">
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-secondary" style="border-color: var(--border-subtle);">Filter</button>
+                            <button class="btn-secondary" style="border-color: var(--border-subtle);">Export CSV</button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase;">
+                                    <th style="padding: 12px;">User ID</th>
+                                    <th style="padding: 12px;">Name & Email</th>
+                                    <th style="padding: 12px;">Role</th>
+                                    <th style="padding: 12px;">Status</th>
+                                    <th style="padding: 12px; text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: AQI DATA MANAGEMENT -->
+            <section id="module-data" class="module-section">
+                <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                    <div>
+                        <h1 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">AQI & Location Management</h1>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Manage historical records and monitored regions.</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-secondary" style="border-color: var(--border-subtle);" onclick="app.showToast('Initiating Database Import Tool...', 'info')">Import JSON/CSV</button>
+                    </div>
+                </header>
+
+                <div class="grid-1-1">
+                    <div class="glass-panel" style="padding: 24px;">
+                        <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 16px;">Monitored Cities</h3>
+                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                            <input type="text" id="newCityInput" class="modern-input" placeholder="Add new city..." style="background: var(--bg-primary); border-color: var(--border-subtle); flex: 1;">
+                            <button class="btn-secondary" onclick="app.addCity()" style="border-color: var(--border-subtle);">Add</button>
+                        </div>
+                        <div id="cityList" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+                            <!-- Cities JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel" style="padding: 24px;">
+                        <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 16px;">Historical Data Records</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">View and purge historical AQI snapshots to free up DB storage.</p>
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                            <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">
+                                <th style="padding: 8px;">Date</th><th style="padding: 8px;">Records</th><th style="padding: 8px; text-align: right;">Action</th>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-subtle);">
+                                <td style="padding: 8px; color: var(--text-muted);">2026-06-11</td><td style="padding: 8px; color: var(--text-primary);">14,021</td>
+                                <td style="padding: 8px; text-align: right;"><button class="btn-secondary" style="padding: 2px 8px; border-color: var(--border-subtle); color: var(--danger);">Purge</button></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-subtle);">
+                                <td style="padding: 8px; color: var(--text-muted);">2026-06-10</td><td style="padding: 8px; color: var(--text-primary);">13,992</td>
+                                <td style="padding: 8px; text-align: right;"><button class="btn-secondary" style="padding: 2px 8px; border-color: var(--border-subtle); color: var(--danger);">Purge</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: PREDICTION MODELS -->
+            <section id="module-predictions" class="module-section">
+                <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                    <div>
+                        <h1 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">ML Model Diagnostics</h1>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Monitor prediction accuracy and confidence scores.</p>
+                    </div>
+                    <button class="btn-secondary" style="border-color: var(--border-subtle);" onclick="app.showToast('Re-training requires manual CLI execution.', 'warning')">Trigger Model Re-train</button>
+                </header>
+
+                <div class="grid-3" style="margin-bottom: 24px;">
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">Global Accuracy (R²)</div>
+                        <div class="metric-value" style="color: var(--text-primary); font-family: monospace;">0.942</div>
+                    </div>
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">Mean Absolute Error</div>
+                        <div class="metric-value" style="color: var(--text-primary); font-family: monospace;">4.12 AQI</div>
+                    </div>
+                    <div class="glass-panel metric-card">
+                        <div class="metric-title" style="color: var(--text-secondary);">Avg Confidence Score</div>
+                        <div class="metric-value" style="color: var(--success); font-family: monospace;">91.5%</div>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 20px;">Predicted vs Actual AQI (Last 7 Days)</h3>
+                    <div style="height: 300px;"><canvas id="predictionAccuracyChart"></canvas></div>
+                </div>
+            </section>
+
+            <!-- MODULE: ANALYTICS -->
+            <section id="module-analytics" class="module-section">
+                <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                    <div>
+                        <h1 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">Reporting & Analytics</h1>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Generate interactive charts and exportable PDF/Excel reports.</p>
+                    </div>
+                    <button class="btn-accent" onclick="app.showToast('Generating Master Excel Report...', 'info')">Export Full Report</button>
+                </header>
+
+                <div class="grid-1-1">
+                    <div class="glass-panel" style="padding: 24px;">
+                        <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 20px;">Top Polluted Regions</h3>
+                        <div style="height: 250px;"><canvas id="topRegionsChart"></canvas></div>
+                    </div>
+                    <div class="glass-panel" style="padding: 24px;">
+                        <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 20px;">Pollutant Distribution</h3>
+                        <div style="height: 250px;"><canvas id="pollutantDistChart"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: SETTINGS -->
+            <section id="module-settings" class="module-section">
+                <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                    <div>
+                        <h1 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">System & Security Settings</h1>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Manage platform config, backups, and audit logs.</p>
+                    </div>
+                </header>
+
+                <div class="grid-1-1">
+                    
+                    <!-- Config & Backup -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <div class="glass-panel" style="padding: 24px;">
+                            <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 16px;">Platform Configuration</h3>
+                            <div class="input-group">
+                                <label class="input-label" style="color: var(--text-secondary);">OpenWeather API Key</label>
+                                <input type="password" class="modern-input" value="b101a416d62828bb317b839461ca5493" style="background: var(--bg-primary); border-color: var(--border-subtle); color: var(--text-primary);">
+                            </div>
+                            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-top: 16px;">
+                                <div style="color: var(--text-muted); font-size: 0.9rem;">Maintenance Mode</div>
+                                <input type="checkbox" id="maintenanceToggle" onchange="app.toggleMaintenance(this.checked)" style="accent-color: var(--danger);">
+                            </label>
+                        </div>
+
+                        <div class="glass-panel" style="padding: 24px;">
+                            <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 8px;">Backup & Restore</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">Create a secure snapshot of the entire MongoDB database.</p>
+                            
+                            <div id="backupProgress" style="display: none; height: 4px; background: #222; border-radius: 2px; margin-bottom: 16px; overflow: hidden;">
+                                <div id="backupBar" style="height: 100%; width: 0%; background: var(--accent-color); transition: width 0.1s linear;"></div>
+                            </div>
+                            
+                            <button class="btn-accent" style="width: 100%;" onclick="app.triggerBackup()">Generate Backup</button>
+                        </div>
+                        
+                        <div class="glass-panel" style="padding: 24px;">
+                            <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 8px;">Notification Center</h3>
+                            <textarea class="modern-input" id="broadcastMsg" placeholder="Type emergency broadcast message to all users..." style="background: var(--bg-primary); border-color: var(--border-subtle); height: 80px; margin-bottom: 12px;"></textarea>
+                            <button class="btn-secondary" style="border-color: var(--border-subtle); width: 100%; color: var(--warning);" onclick="app.sendBroadcast()">Broadcast Alert</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Audit Logs -->
+                    <div class="glass-panel" style="padding: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="font-size: 1rem; color: var(--text-primary);">Security Audit Logs</h3>
+                            <button class="btn-secondary" style="border-color: var(--border-subtle); padding: 4px 8px; font-size: 0.75rem;">Download .txt</button>
+                        </div>
+                        
+                        <div style="background: var(--bg-primary); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; height: 450px; overflow-y: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; font-family: monospace;">
+                                <tbody id="auditLogBody">
+                                    <tr style="border-bottom: 1px solid var(--border-subtle);">
+                                        <td style="padding: 8px; color: var(--text-secondary);">2026-06-12 14:05</td>
+                                        <td style="padding: 8px; color: var(--success);">LOGIN</td>
+                                        <td style="padding: 8px; color: var(--text-muted);">Admin IP 192.168.1.4 authenticated</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid var(--border-subtle);">
+                                        <td style="padding: 8px; color: var(--text-secondary);">2026-06-11 09:12</td>
+                                        <td style="padding: 8px; color: var(--warning);">SETTINGS</td>
+                                        <td style="padding: 8px; color: var(--text-muted);">API Key updated by Admin</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid var(--border-subtle);">
+                                        <td style="padding: 8px; color: var(--text-secondary);">2026-06-10 18:45</td>
+                                        <td style="padding: 8px; color: var(--danger);">SECURITY</td>
+                                        <td style="padding: 8px; color: var(--text-muted);">Failed login attempt (IP 45.22.1.9)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- The Global App functions (Toast, etc) -->
+    <script src="js/app.js"></script>
+    <!-- The Admin SPA Logic -->
+    <script src="js/admin-core.js"></script>
+</body>
+</html>

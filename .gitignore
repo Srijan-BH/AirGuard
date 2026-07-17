@@ -1,0 +1,10 @@
+# Environment variables
+.env
+
+# Windows executable files
+*.exe
+*.dll
+
+# OS generated files
+.DS_Store
+Thumbs.db

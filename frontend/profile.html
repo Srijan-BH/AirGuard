@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirGuard AI - User Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+
+    <div class="layout-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div style="font-weight: 800; font-size: 1.5rem; letter-spacing: -0.05em; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                AirGuard AI
+            </div>
+            <div style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 32px; padding-left: 2px;">Workspace</div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    Analytics
+                </a>
+                <a href="prediction.html" class="sidebar-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    Live AQI & Predict
+                </a>
+                <a href="history.html" class="sidebar-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    Historical Data
+                </a>
+                <a href="profile.html" class="sidebar-link active">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    User Profile
+                </a>
+            </nav>
+
+            <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px;">
+                <button id="theme-toggle" class="btn-secondary" style="width: 100%; justify-content: flex-start; gap: 8px;">
+                    🌓 Toggle Theme
+                </button>
+                <button class="btn-secondary" onclick="logout()" style="width: 100%; justify-content: flex-start; gap: 8px; color: var(--danger);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main" style="display: flex; flex-direction: column; gap: 24px;">
+            <header style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 4px;">Profile Settings</h1>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">Manage your account, preferences, and notifications.</p>
+                </div>
+                <button class="btn-accent" id="saveProfileBtn">Save Changes</button>
+            </header>
+
+            <div class="grid-1-2">
+                <!-- Profile Card -->
+                <div class="glass-panel" style="padding: 32px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div id="profileAvatar" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-color), #8b5cf6); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; font-weight: 700; border: 4px solid var(--bg-tertiary); box-shadow: var(--shadow-md);">
+                        --
+                    </div>
+                    <h2 id="profileNameDisplay" style="margin-bottom: 4px;">Loading...</h2>
+                    <p id="profileRoleDisplay" style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.9rem;">Free Tier Member</p>
+                    
+                    <button id="uploadAvatarBtn" class="btn-secondary" style="width: 100%; margin-bottom: 12px;">Upload New Avatar</button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    <button class="btn-secondary" style="width: 100%; color: var(--danger);">Delete Account</button>
+                </div>
+
+                <!-- Settings Form -->
+                <div class="glass-panel" style="padding: 32px;">
+                    <h3 style="margin-bottom: 24px; font-size: 1.2rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">Personal Information</h3>
+                    
+                    <div class="grid-1-1" style="margin-bottom: 32px;">
+                        <div class="input-group" style="margin: 0;">
+                            <label class="input-label">First Name</label>
+                            <input type="text" id="profileFirstName" class="modern-input" value="">
+                        </div>
+                        <div class="input-group" style="margin: 0;">
+                            <label class="input-label">Last Name</label>
+                            <input type="text" id="profileLastName" class="modern-input" value="">
+                        </div>
+                        <div class="input-group" style="margin: 0; grid-column: span 2;">
+                            <label class="input-label">Email Address</label>
+                            <input type="email" id="profileEmail" class="modern-input" value="">
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 24px; font-size: 1.2rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">Preferences</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                            <div>
+                                <div style="font-weight: 500; margin-bottom: 4px;">Email Notifications</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">Receive daily AQI summaries and severe weather alerts.</div>
+                            </div>
+                            <input type="checkbox" checked style="width: auto;">
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                            <div>
+                                <div style="font-weight: 500; margin-bottom: 4px;">Data Sharing</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">Allow anonymous data sharing to improve ML predictions.</div>
+                            </div>
+                            <input type="checkbox" checked style="width: auto;">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        gsap.from(".glass-panel", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('userName') || 'AirGuard User';
+            const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+            const role = localStorage.getItem('role') || 'User';
+
+            // Split name
+            const nameParts = userName.trim().split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+            
+            // Generate initials
+            let initials = 'U';
+            if (firstName && lastName) initials = firstName[0] + lastName[0];
+            else if (firstName) initials = firstName.substring(0, 2);
+
+            // Populate UI
+            document.getElementById('profileNameDisplay').innerText = userName;
+            document.getElementById('profileAvatar').innerText = initials.toUpperCase();
+            const roleDisplay = document.getElementById('profileRoleDisplay');
+            if (role === 'Admin') {
+                roleDisplay.innerText = 'Administrator';
+            } else {
+                roleDisplay.style.display = 'none'; // Remove "Premium Member" text completely
+            }
+            
+            document.getElementById('profileFirstName').value = firstName;
+            document.getElementById('profileLastName').value = lastName;
+            document.getElementById('profileEmail').value = userEmail;
+            
+            // Handle Save Changes
+            const saveBtn = document.getElementById('saveProfileBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', () => {
+                    const newFirst = document.getElementById('profileFirstName').value.trim();
+                    const newLast = document.getElementById('profileLastName').value.trim();
+                    const newEmail = document.getElementById('profileEmail').value.trim();
+                    
+                    const newFullName = newFirst + (newLast ? ' ' + newLast : '');
+                    
+                    // Update localStorage active session
+                    localStorage.setItem('userName', newFullName);
+                    localStorage.setItem('userEmail', newEmail);
+                    
+                    // Update usersDb map
+                    if (newEmail) {
+                        const usersDb = JSON.parse(localStorage.getItem('usersDb') || '{}');
+                        usersDb[newEmail.toLowerCase()] = newFullName;
+                        localStorage.setItem('usersDb', JSON.stringify(usersDb));
+                    }
+                    
+                    // Update UI immediately
+                    document.getElementById('profileNameDisplay').innerText = newFullName;
+                    
+                    let newInitials = 'U';
+                    if (newFirst && newLast) newInitials = newFirst[0] + newLast[0];
+                    else if (newFirst) newInitials = newFirst.substring(0, 2);
+                    document.getElementById('profileAvatar').innerText = newInitials.toUpperCase();
+                    
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('Profile settings saved successfully!', 'success');
+                    }
+                });
+            }
+            
+            // Handle Avatar Upload
+            const uploadBtn = document.getElementById('uploadAvatarBtn');
+            const avatarInput = document.getElementById('avatarInput');
+            const avatarDisplay = document.getElementById('profileAvatar');
+            
+            if (uploadBtn && avatarInput && avatarDisplay) {
+                // Restore saved avatar if it exists
+                const savedAvatar = localStorage.getItem('userAvatar');
+                if (savedAvatar) {
+                    avatarDisplay.style.backgroundImage = `url(${savedAvatar})`;
+                    avatarDisplay.style.backgroundSize = 'cover';
+                    avatarDisplay.style.backgroundPosition = 'center';
+                    avatarDisplay.innerText = '';
+                }
+            
+                uploadBtn.addEventListener('click', () => {
+                    avatarInput.click();
+                });
+                
+                avatarInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imgUrl = e.target.result;
+                            avatarDisplay.style.backgroundImage = `url(${imgUrl})`;
+                            avatarDisplay.style.backgroundSize = 'cover';
+                            avatarDisplay.style.backgroundPosition = 'center';
+                            avatarDisplay.innerText = '';
+                            
+                            // Save to localStorage
+                            localStorage.setItem('userAvatar', imgUrl);
+                            
+                            if (typeof window.showToast === 'function') {
+                                window.showToast('Avatar updated successfully!', 'success');
+                            }
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirGuard AI — Admin Control Center</title>
+    <meta name="description" content="Restricted admin access to AirGuard AI control systems.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body {
+            display: flex; min-height: 100vh; overflow: hidden;
+        }
+        /* Left Panel */
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0,112,243,0.12) 0%, rgba(139,92,246,0.1) 100%);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            padding: 60px;
+            position: relative; overflow: hidden;
+        }
+        .login-left::before {
+            content: '';
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(0,112,243,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(139,92,246,0.12) 0%, transparent 50%);
+            animation: blobFlow 12s ease-in-out infinite alternate;
+        }
+        .brand-logo {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 60px; position: relative; z-index: 1;
+        }
+        .brand-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, #0070f3, #8b5cf6);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(0,112,243,0.4);
+        }
+        .brand-name { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.04em; }
+        .login-headline {
+            font-size: 3rem; font-weight: 800; line-height: 1.15;
+            letter-spacing: -0.04em; margin-bottom: 20px;
+            position: relative; z-index: 1;
+        }
+        .login-sub { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; max-width: 400px; position: relative; z-index: 1; margin-bottom: 40px; }
+        .aqi-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,112,243,0.1); border: 1px solid rgba(0,112,243,0.2);
+            color: #0070f3; padding: 8px 16px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; position: relative; z-index: 1;
+        }
+        .aqi-dot { width: 8px; height: 8px; border-radius: 50%; background: #0070f3; animation: pulseGlow 1.5s infinite alternate; }
+
+        /* Right Panel */
+        .login-right {
+            width: 480px; min-width: 480px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px;
+            background: var(--bg-primary);
+        }
+        .login-card { width: 100%; max-width: 400px; }
+        .login-card h2 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 6px; }
+        .login-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 36px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-input {
+            width: 100%; padding: 13px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem; font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease; outline: none;
+        }
+        .form-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0,112,243,0.15);
+            background: var(--bg-tertiary);
+        }
+        .form-input.error { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(238,0,0,0.1); }
+
+        .submit-btn {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #0070f3, #0051b3);
+            color: white; border: none; border-radius: 10px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,112,243,0.35);
+            margin-top: 8px;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,112,243,0.45); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
+        .divider::before, .divider::after { content:''; flex:1; height:1px; background: var(--border-subtle); }
+        .divider span { font-size: 0.8rem; color: var(--text-muted); }
+
+        .error-box {
+            display: none;
+            background: rgba(238,0,0,0.08); border: 1px solid rgba(238,0,0,0.2);
+            border-radius: 8px; padding: 12px 16px;
+            color: #ff6b6b; font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .login-left { display: none; }
+            .login-right { width: 100%; min-width: unset; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+
+    <!-- Left Branding Panel -->
+    <div class="login-left">
+        <div class="brand-logo">
+            <div class="brand-icon">
+                <!-- Shield Icon to signify admin -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="brand-name">AirGuard AI</span>
+        </div>
+
+        <h1 class="login-headline">
+            Admin Control<br>
+            <span style="background: linear-gradient(135deg, #0070f3, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Center</span>
+        </h1>
+        <p class="login-sub">
+            Secure restricted access to AirGuard AI system administration, user management, and core telemetry overrides.
+        </p>
+        <div class="aqi-pill">
+            <span class="aqi-dot"></span>
+            System Online — Authorized Access Only
+        </div>
+    </div>
+
+    <!-- Right Login Panel -->
+    <div class="login-right">
+        <div class="login-card" id="adminCard">
+            <h2>Admin Login</h2>
+            <p>Sign in to the administrative console.</p>
+
+            <div class="error-box" id="errorBox"></div>
+
+            <form id="adminLoginForm" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="adminEmail">Admin Email</label>
+                    <input type="email" id="adminEmail" class="form-input" placeholder="admin@airguard.ai" required>
+                </div>
+                <div class="form-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:7px;">
+                        <label class="form-label" for="adminPassword" style="margin-bottom:0;">Security Key</label>
+                        <a href="#" style="font-size:0.8rem; color:var(--accent-color);">Recover access?</a>
+                    </div>
+                    <input type="password" id="adminPassword" class="form-input" placeholder="••••••••••••" required>
+                </div>
+
+                <button type="submit" class="submit-btn" id="authBtn">
+                    Authenticate
+                </button>
+            </form>
+
+            <div class="divider"><span>OR</span></div>
+
+            <div style="text-align:center; font-size:0.9rem; color:var(--text-secondary); margin-bottom:16px;">
+                <a href="login.html" style="color:var(--text-primary); font-weight:600;">Return to User Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        gsap.from('.login-right', { x: 40, opacity: 0, duration: 0.7, ease: 'power3.out' });
+        gsap.from('.login-left .brand-logo', { y: -20, opacity: 0, duration: 0.6, delay: 0.2, ease: 'power2.out' });
+        gsap.from('.login-headline', { y: 30, opacity: 0, duration: 0.7, delay: 0.3, ease: 'power3.out' });
+        gsap.from('.login-sub', { y: 20, opacity: 0, duration: 0.6, delay: 0.5, ease: 'power2.out' });
+
+        const BACKEND = 'http://localhost:5000';
+
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const btn = document.getElementById('authBtn');
+            const errorBox = document.getElementById('errorBox');
+
+            errorBox.style.display = 'none';
+
+            if (!email || !password) {
+                errorBox.textContent = 'Please fill in all required fields.';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Verifying credentials...';
+
+            try {
+                const res = await fetch(`${BACKEND}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.role === 'Admin') {
+                    // Store session
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('role', 'Admin');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', 'Admin');
+
+                    btn.textContent = '✓ Identity Confirmed';
+                    btn.style.background = 'linear-gradient(135deg, #17c964, #0070f3)';
+
+                    setTimeout(() => window.location.href = 'admin.html', 800);
+                } else if (res.ok && data.role !== 'Admin') {
+                    // Logged in but not admin
+                    gsap.to('#adminCard', { x: [-10, 10, -10, 10, 0], duration: 0.4 });
+                    errorBox.textContent = 'Access Denied: Account lacks admin privileges.';
+                    errorBox.style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = 'Authenticate';
+                } else {
+                    errorBox.textContent = data.message || 'Invalid email or password.';
+                    errorBox.style.display = 'block';
+                    document.getElementById('adminPassword').classList.add('error');
+                    gsap.to('#adminCard', { x: [-8, 8, -8, 8, 0], duration: 0.4, ease: 'power2.inOut' });
+                    btn.disabled = false;
+                    btn.textContent = 'Authenticate';
+                }
+            } catch (err) {
+                errorBox.textContent = 'Cannot connect to server. Make sure the backend is running (python app.py).';
+                errorBox.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Authenticate';
+            }
+        });
+
+        document.getElementById('adminPassword').addEventListener('input', function() {
+            this.classList.remove('error');
+        });
+    </script>
+</body>
+</html>

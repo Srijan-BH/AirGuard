@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirGuard AI - Next-Gen Air Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,112,243,0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .nav-scrolled {
+            background: rgba(10, 10, 10, 0.2);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="mesh-blob primary"></div>
+    <div class="mesh-blob secondary"></div>
+
+    <!-- Sticky Navigation -->
+    <nav id="mainNav" style="position: fixed; top: 0; width: 100%; z-index: 100; transition: all 0.3s ease; padding: 16px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.05em; display: flex; align-items: center; gap: 10px; color: var(--text-primary);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pulse-glow" style="border-radius: 50%;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                AirGuard AI
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center;">
+                <a href="#about" style="font-size: 0.95rem; font-weight: 500; color: var(--text-primary);">About</a>
+                <a href="#aqi-details" style="font-size: 0.95rem; font-weight: 500; color: var(--text-primary);">How AQI Works</a>
+                <a href="#architecture" style="font-size: 0.95rem; font-weight: 500; color: var(--text-primary);">Architecture</a>
+                <div style="width: 1px; height: 24px; background: var(--border-subtle);"></div>
+                <a href="prediction.html" class="btn-accent float-effect" style="border-radius: 100px; padding: 10px 24px; box-shadow: 0 0 20px rgba(0,112,243,0.4);">Launch Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+        
+        <!-- ─── HERO SECTION ─── -->
+        <main style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 180px; position: relative; z-index: 10; min-height: 80vh;">
+            <div class="hero-glow pulse-glow"></div>
+            
+            <div class="badge fade-enter" style="border: 1px solid rgba(0,112,243,0.3); background: rgba(0,112,243,0.1); color: #66b3ff; margin-bottom: 24px; padding: 8px 16px; border-radius: 30px; font-weight: 600;">
+                <span style="display:inline-block; margin-right:8px; animation: spin 4s linear infinite;">🌍</span> Global Satellite Monitoring Active
+            </div>
+            
+            <h1 class="fade-enter" style="font-size: 5.5rem; line-height: 1.1; font-weight: 900; letter-spacing: -0.05em; max-width: 900px; margin-bottom: 24px; animation-delay: 0.1s;">
+                Protecting Communities with <br>
+                <span class="gradient-text">Predictive Intelligence</span>.
+            </h1>
+            
+            <p class="fade-enter" style="font-size: 1.3rem; color: var(--text-secondary); max-width: 700px; margin-bottom: 48px; animation-delay: 0.2s; line-height: 1.6;">
+                AirGuard AI ingests live satellite data, processes it through machine learning algorithms, and instantly dispatches emergency SMS alerts when hazardous air quality is detected.
+            </p>
+
+            <div class="fade-enter" style="display: flex; gap: 20px; animation-delay: 0.3s;">
+                <button class="btn-accent pulse-glow" onclick="window.location.href='prediction.html'" style="font-size: 1.1rem; padding: 16px 36px; border-radius: 12px; font-weight: 700;">
+                    Access Live Telemetry
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 8px; vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </main>
+
+        <!-- ─── ABOUT PROJECT SECTION ─── -->
+        <section id="about" class="section-container gs-reveal">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 16px;">The Intelligence Engine</h2>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">How AirGuard turns invisible threats into actionable, life-saving data.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="feature-card">
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 112, 243, 0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 12px;">Global Satellite Ingestion</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">AirGuard constantly pulls live telemetry from the OpenWeather API, calculating instantaneous pollution levels for any set of coordinates on Earth.</p>
+                </div>
+                
+                <div class="feature-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 12px;">AutoML Prediction Pipeline</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Trained on a multi-continent dataset, our backend dynamically races Random Forest, XGBoost, and Linear models to select the highest-accuracy predictor.</p>
+                </div>
+
+                <div class="feature-card" style="border-color: rgba(238, 0, 0, 0.3);">
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(238, 0, 0, 0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 12px;">Emergency Twilio Broadcast</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">When US EPA AQI standards exceed 200 (Hazardous), the system triggers an instantaneous mass-SMS broadcast to registered residents via Twilio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── AQI DETAILS SECTION ─── -->
+        <section id="aqi-details" class="section-container gs-reveal">
+            <div class="glass-panel" style="padding: 60px; position: relative; overflow: hidden; border-color: rgba(255,255,255,0.1);">
+                <div style="position: absolute; top: -50%; right: -20%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%); z-index: 0; filter: blur(50px);"></div>
+                
+                <div style="position: relative; z-index: 1;">
+                    <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px;">Understanding the Air Quality Index</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin-bottom: 48px; line-height: 1.6;">
+                        AirGuard calculates the official <strong>US EPA 0-500 Standard</strong>. It works by measuring six major pollutants. Whichever pollutant has the most severe concentration becomes the driving AQI score for that hour.
+                    </p>
+
+                    <div class="grid-3" style="gap: 24px;">
+                        <div style="background: rgba(0,0,0,0.4); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                            <h4 style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 8px;">PM2.5 & PM10</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Microscopic particulate matter (dust, smoke). PM2.5 is so small it enters the bloodstream directly from the lungs.</p>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.4); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                            <h4 style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 8px;">Nitrogen Dioxide (NO₂)</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">A highly reactive gas primarily emitted by vehicle exhaust and power plants. Causes severe respiratory issues.</p>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.4); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                            <h4 style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 8px;">Carbon Monoxide (CO)</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">An odorless, colorless gas produced by incomplete combustion. Reduces oxygen delivery to the body's organs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FOOTER ─── -->
+        <footer style="border-top: 1px solid var(--border-subtle); padding: 40px 0; margin-top: 100px; text-align: center; color: var(--text-muted);">
+            <p>AirGuard AI © 2026. Data provided by OpenWeather. SMS infrastructure by Twilio.</p>
+        </footer>
+
+    </div>
+
+    <!-- GSAP Animations -->
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Sticky Nav Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Intro Animations
+        gsap.from(".mesh-blob", {
+            opacity: 0,
+            duration: 3,
+            stagger: 0.5,
+            ease: "power2.out"
+        });
+
+        // Scroll Animations for sections
+        const sections = gsap.utils.toArray('.gs-reveal');
+        sections.forEach((elem) => {
+            gsap.fromTo(elem, 
+                { y: 50, opacity: 0 }, 
+                {
+                    y: 0, 
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 80%", // trigger when top of element is 80% down viewport
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Hover effect for feature cards
+        const cards = document.querySelectorAll('.feature-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, { y: -10, duration: 0.3, ease: "power2.out" });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { y: 0, duration: 0.3, ease: "power2.out" });
+            });
+        });
+    </script>
+</body>
+</html>

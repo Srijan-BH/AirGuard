@@ -1,0 +1,53 @@
+{
+	"info": {
+		"name": "AirGuard AI API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/signup", "host": ["{{base_url}}"], "path": ["signup"]},
+						"body": {"mode": "raw", "raw": "{\"name\":\"Test User\",\"email\":\"test@airguard.ai\",\"password\":\"Secure@123\"}"}
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"]},
+						"body": {"mode": "raw", "raw": "{\"email\":\"test@airguard.ai\",\"password\":\"Secure@123\"}"}
+					}
+				}
+			]
+		},
+		{
+			"name": "Live AQI & Predictions",
+			"item": [
+				{
+					"name": "Fetch Live AQI",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{jwt_token}}"}],
+						"url": {"raw": "{{base_url}}/live-aqi?city=London", "host": ["{{base_url}}"], "path": ["live-aqi"], "query": [{"key": "city", "value": "London"}]}
+					}
+				},
+				{
+					"name": "Generate PDF",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{jwt_token}}"}],
+						"url": {"raw": "{{base_url}}/generate-pdf", "host": ["{{base_url}}"], "path": ["generate-pdf"]},
+						"body": {"mode": "raw", "raw": "{\"city\":\"London\"}"}
+					}
+				}
+			]
+		}
+	]
+}
