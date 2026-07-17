@@ -25,6 +25,10 @@
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
+        @media (max-width: 768px) {
+            .desktop-nav { display: none !important; }
+            h1 { font-size: 2.5rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -39,7 +43,7 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pulse-glow" style="border-radius: 50%;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 AirGuard AI
             </div>
-            <div style="display: flex; gap: 24px; align-items: center;">
+            <div class="desktop-nav" style="display: flex; gap: 24px; align-items: center;">
                 <a href="#about" style="font-size: 0.95rem; font-weight: 500; color: var(--text-primary);">About</a>
                 <a href="#aqi-details" style="font-size: 0.95rem; font-weight: 500; color: var(--text-primary);">How AQI Works</a>
                 <a href="#architecture" style="font-size: 0.95rem; font-weight: 500; color: var(--text-primary);">Architecture</a>
